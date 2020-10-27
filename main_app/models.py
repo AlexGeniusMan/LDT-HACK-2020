@@ -34,7 +34,7 @@ class Sprint(models.Model):
 
 class Grade(models.Model):
     name = models.CharField(_("class name"), max_length=30, blank=True)
-    teacher = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL)
 
     def __str__(self):
         return self.name
@@ -64,8 +64,8 @@ class User(AbstractUser):
 
     # class Meta:
     #     abstract = True
-        # verbose_name = 'Пользователь'
-        # verbose_name_plural = 'Пользователи'
+    # verbose_name = 'Пользователь'
+    # verbose_name_plural = 'Пользователи'
 
     # def set_password(self, raw_password='Alpine12'):
     #     print('AHALAY MAHALAY -------------------------------- ')
@@ -82,12 +82,13 @@ class User(AbstractUser):
         """
         Return the first_name plus the last_name, with a space in between.
         """
-        full_name = '%s %s %s' % (self.first_name, self.last_name, self.middle_name)
-        return full_name.strip()
+        # full_name = '%s %s %s' % (self.first_name, self.last_name, self.middle_name)
+        # return full_name.strip()
+        admin_panel_name = self.email + ' (' + self.last_name + ' ' + self.first_name[0:1] + '.' + self.middle_name[0:1] + '.)'
+        return admin_panel_name
 
     def __str__(self):
         return self.get_full_name()
-
 
 # class Teacher(User):
 #     pass

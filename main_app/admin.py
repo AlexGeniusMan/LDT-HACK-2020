@@ -5,6 +5,12 @@ from django.utils.translation import gettext, gettext_lazy as _
 from .models import *
 
 
+class GradeAdmin(admin.ModelAdmin):
+    filter_horizontal = [
+        'users'
+    ]
+
+
 class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
@@ -23,5 +29,5 @@ class CustomUserAdmin(UserAdmin):
 
 
 admin.site.register(User, CustomUserAdmin)
-admin.site.register(Grade)
+admin.site.register(Grade, GradeAdmin)
 admin.site.register(Sprint)
