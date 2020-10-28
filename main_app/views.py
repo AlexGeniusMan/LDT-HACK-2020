@@ -3,13 +3,20 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import generics, mixins
 from main_app.models import *
-from main_app.serializers import GradeSerializer
+from main_app.serializers import *
 
 
-class Show(APIView):
+class ShowCourse(APIView):
     def get(self, request):
         data = Grade.objects.get(name='123')
         data = GradeSerializer(data, context={'request': request})
+        return Response(data.data)
+
+
+class ShowTask(APIView):
+    def get(self, request, pk):
+        data = Task.objects.get(pk=pk)
+        data = CurrentTaskSerializer(data, context={'request': request})
         return Response(data.data)
 
 # class CoursePage(APIView):

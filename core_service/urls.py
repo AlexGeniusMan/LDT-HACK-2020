@@ -20,5 +20,6 @@ import main_app.views as main_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/course/', main_views.Show.as_view()),
+    path('api/course/', main_views.ShowCourse.as_view()),
+    path('api/task/<int:pk>/', main_views.ShowTask.as_view()),
 ]

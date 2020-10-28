@@ -2,11 +2,27 @@ from rest_framework import serializers
 from .models import *
 
 
+class CurrentTaskDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        depth = 2
+        model = TaskDetail
+        fields = ('id', 'is_done', 'last_code')
+
+
+class CurrentTaskSerializer(serializers.ModelSerializer):
+    task_detail = CurrentTaskDetailSerializer(many=True, read_only=True)
+
+    class Meta:
+        depth = 2
+        model = Task
+        fields = ('id', 'name', 'theory', 'mission', 'task_detail')
+
+
 class TaskDetailSerializer(serializers.ModelSerializer):
     class Meta:
         depth = 2
         model = TaskDetail
-        fields = ('is_done', 'id')
+        fields = ('id', 'is_done')
 
 
 class TaskSerializer(serializers.ModelSerializer):
@@ -15,7 +31,7 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         depth = 2
         model = Task
-        fields = ('name', 'id', 'task_detail')
+        fields = ('id', 'name', 'task_detail')
 
 
 class SprintSerializer(serializers.ModelSerializer):
@@ -24,7 +40,7 @@ class SprintSerializer(serializers.ModelSerializer):
     class Meta:
         depth = 2
         model = Sprint
-        fields = ('name', 'id', 'tasks')
+        fields = ('id', 'name', 'tasks')
 
 
 class GradeSerializer(serializers.ModelSerializer):
@@ -33,4 +49,4 @@ class GradeSerializer(serializers.ModelSerializer):
     class Meta:
         depth = 2
         model = Grade
-        fields = ('name', 'id', 'sprints')
+        fields = ('id', 'name', 'sprints')
