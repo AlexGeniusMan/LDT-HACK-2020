@@ -17,7 +17,7 @@ from django.conf import settings
 class TaskDetail(models.Model):
     is_done = models.BooleanField(_('Статус'))
     students = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Учащийся', on_delete=models.PROTECT)
-    task = models.ForeignKey('Task', verbose_name='Задание', on_delete=models.PROTECT)
+    task = models.ForeignKey('Task', verbose_name='Задание', on_delete=models.PROTECT, related_name='task_detail')
     last_code = models.CharField(_("Последний запущенный код"), max_length=300, blank=True)
 
 
@@ -25,7 +25,7 @@ class Task(models.Model):
     name = models.CharField(_("Название задания"), max_length=30, blank=True)
     theory = models.CharField(_("Теоретическое введение"), max_length=30, blank=True)
     mission = models.CharField(_("Техническое задание"), max_length=30, blank=True)
-    sprint = models.ForeignKey('Sprint', on_delete=models.PROTECT)
+    sprint = models.ForeignKey('Sprint', on_delete=models.PROTECT, related_name='tasks')
     students = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name='Учащиеся', through=TaskDetail)
 
     # языки
@@ -36,7 +36,7 @@ class Task(models.Model):
 
 class Sprint(models.Model):
     name = models.CharField(_("Название спринта"), max_length=30, blank=True)
-    grade = models.ForeignKey('Grade', on_delete=models.PROTECT, verbose_name='Класс')
+    grade = models.ForeignKey('Grade', on_delete=models.PROTECT, verbose_name='Класс', related_name='sprints')
 
     class Meta:
         verbose_name = 'Спринт'
