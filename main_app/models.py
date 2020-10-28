@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from multiselectfield import MultiSelectField
 
 
 # class Test(models.Model):
@@ -14,11 +15,24 @@ from django.conf import settings
 #     def __str__(self):
 #         return self.name
 
+class Test(models.Model):
+    question = models.TextField("Входные данные", blank=True)
+    answer = models.TextField("Выходные данные", blank=True)
+    task = models.ForeignKey('Task', verbose_name='Тест', on_delete=models.PROTECT, related_name='test')
+
+
 class TaskDetail(models.Model):
     is_done = models.BooleanField(_('Статус'))
     students = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Учащийся', on_delete=models.PROTECT)
     task = models.ForeignKey('Task', verbose_name='Задание', on_delete=models.PROTECT, related_name='task_detail')
     last_code = models.CharField(_("Последний запущенный код"), max_length=300, blank=True)
+
+
+LANGUAGES = (('python', 'Python'),
+              ('cpp', 'C++'),
+              ('java', 'Java'),
+              ('c_sharp', 'C#'),
+              ('pascal', 'Pascal'))
 
 
 class Task(models.Model):
@@ -27,6 +41,7 @@ class Task(models.Model):
     mission = models.CharField(_("Техническое задание"), max_length=30, blank=True)
     sprint = models.ForeignKey('Sprint', on_delete=models.PROTECT, related_name='tasks')
     students = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name='Учащиеся', through=TaskDetail)
+    languages = MultiSelectField(choices=LANGUAGES, default='python')
 
     # языки
 

@@ -15,7 +15,7 @@ class CurrentTaskSerializer(serializers.ModelSerializer):
     class Meta:
         depth = 2
         model = Task
-        fields = ('id', 'name', 'theory', 'mission', 'task_detail')
+        fields = ('id', 'name', 'theory', 'mission', 'task_detail', 'languages')
 
 
 class TaskDetailSerializer(serializers.ModelSerializer):

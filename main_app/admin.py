@@ -34,7 +34,7 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(Grade, GradeAdmin)
-# admin.site.register(Grade)
 admin.site.register(Sprint)
 admin.site.register(Task)
 admin.site.register(TaskDetail)
+admin.site.register(Test)
