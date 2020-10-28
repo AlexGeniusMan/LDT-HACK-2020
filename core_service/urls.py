@@ -16,6 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+import main_app.views as main_views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('show_status/', main_views.ShowUserGroup.as_view()),
 ]
