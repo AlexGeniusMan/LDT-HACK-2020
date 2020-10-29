@@ -22,9 +22,17 @@ class ShowTask(APIView):
 
 class CheckUser(APIView):
     def get(self, request):
-        username = request.data
-        print(username)
-        return Response('1')
+        user = request.user
+        # print(user.objects.prefetch_related().all())
+        # grades = Grade.objects.all()
+        # print(grades[0])
+
+        print(request.user.users.all())
+
+        if user.groups.filter(name='Учителя').exists():
+            return Response('TEACHER')
+        elif user.groups.filter(name='Ученики').exists():
+            return Response('STUDENT')
         # user = User.objects.get(username=username)
 
 # class CoursePage(APIView):

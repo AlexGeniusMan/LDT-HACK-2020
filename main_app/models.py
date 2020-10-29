@@ -29,10 +29,10 @@ class TaskDetail(models.Model):
 
 
 LANGUAGES = (('python', 'Python'),
-              ('cpp', 'C++'),
-              ('java', 'Java'),
-              ('c_sharp', 'C#'),
-              ('pascal', 'Pascal'))
+             ('cpp', 'C++'),
+             ('java', 'Java'),
+             ('c_sharp', 'C#'),
+             ('pascal', 'Pascal'))
 
 
 class Task(models.Model):
@@ -63,7 +63,7 @@ class Sprint(models.Model):
 
 class Grade(models.Model):
     name = models.CharField(_("Название класса"), max_length=30, blank=True)
-    users = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name='Пользователи')
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name='Пользователи', related_name='users')
 
     class Meta:
         verbose_name = 'Класс'
