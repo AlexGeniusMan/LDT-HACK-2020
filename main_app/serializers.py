@@ -17,7 +17,7 @@ class CurrentTaskDetailSerializer(serializers.ModelSerializer):
 
 
 class CurrentTaskSerializer(serializers.ModelSerializer):
-    task_detail = CurrentTaskDetailSerializer(read_only=True)
+    task_detail = CurrentTaskDetailSerializer(read_only=True, many=True)
 
     class Meta:
         depth = 2
@@ -29,11 +29,11 @@ class TaskDetailSerializer(serializers.ModelSerializer):
     class Meta:
         depth = 2
         model = TaskDetail
-        fields = ('id', 'is_done')
+        fields = ('id', 'is_done', 'last_code')
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    task_detail = TaskDetailSerializer(read_only=True)
+    task_detail = TaskDetailSerializer(read_only=True, many=True)
 
     class Meta:
         depth = 2

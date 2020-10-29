@@ -11,16 +11,17 @@ class ShowCourse(APIView):
 
         if request.user.is_authenticated:
             data = Grade.objects.get(pk=pk)
-            data_s = GradeSerializer(data, context={'request': request}, many=True)
-
+            data_s = GradeSerializer(data, context={'request': request})
+            print(data_s.data)
             user_courses = request.user.users.all()
 
             if data in user_courses:
-                return Response(data_s.data)
+                # return Response(data_s.data)
+                return Response('DATA')
             else:
-                return Response('YOU CAN NOT GET ACCESS TO THIS COURSE')
+                return Response('GOOD AUTH BUT NO ACCESS TO THIS COURSE')
         else:
-            return Response('YOU CAN NOT GET ACCESS TO THIS COURSE')
+            return Response('NO AUTH')
 
 
 class ShowTask(APIView):
