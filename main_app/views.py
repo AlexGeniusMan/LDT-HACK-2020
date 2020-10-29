@@ -11,7 +11,7 @@ class ShowCourse(APIView):
 
         if request.user.is_authenticated:
             data = Grade.objects.get(pk=pk)
-            data_s = GradeSerializer(data, context={'request': request})
+            data_s = GradeSerializer(data, context={'request': request}, many=True)
 
             user_courses = request.user.users.all()
 
