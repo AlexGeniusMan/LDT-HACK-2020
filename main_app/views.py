@@ -42,7 +42,7 @@ class ShowMyCourses(APIView):
             # user = User.objects.get(username=username)
         else:
             data = Grade.objects.all()
-            data_s = GradeSerializer(data, context={'request': request})
+            data_s = MyCoursesSerializer(data, context={'request': request}, many=True)
             return Response(data_s.data)
 
 # class CoursePage(APIView):
