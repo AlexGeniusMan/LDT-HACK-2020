@@ -6,7 +6,27 @@ from main_app.models import *
 from main_app.serializers import *
 
 
-class ShowCourse(APIView):
+# class CreateSprint(APIView):
+#     def post(self, request):
+#         grade_id = request.data.class_id
+#         sprint_name = request.data.sprint_name
+#         Sprint.objects.create(**validated_data)
+
+class CreateSprint(mixins.CreateModelMixin,
+                   generics.GenericAPIView):
+    serializer_class = CreateSprintSerializer
+
+    def post(self, request, *args, **kwargs):
+        return self.create(request, *args, **kwargs)
+
+
+# class AddNewSprint(APIView):
+#     def post(self, request):
+#         grade_id = request.data.class_id
+#         sprint_name = request.data.sprint_name
+
+
+class ShowClass(APIView):
     def get(self, request, pk):
 
         if request.user.is_authenticated:
@@ -16,8 +36,8 @@ class ShowCourse(APIView):
             user_courses = request.user.users.all()
 
             if data in user_courses:
-                # return Response(data_s.data)
-                return Response('DATA')
+                return Response(data_s.data)
+                # return Response('DATA')
             else:
                 return Response('GOOD AUTH BUT NO ACCESS TO THIS COURSE')
         else:
@@ -31,7 +51,7 @@ class ShowTask(APIView):
         return Response(data_s.data)
 
 
-class ShowMyCourses(APIView):
+class ShowMyClasses(APIView):
     def get(self, request):
         if request.user.is_authenticated:
             user = request.user
