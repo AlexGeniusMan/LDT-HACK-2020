@@ -42,6 +42,8 @@ class ShowMyCourses(APIView):
             # user = User.objects.get(username=username)
         else:
             data = Grade.objects.all()
+            data_s = GradeSerializer(data, context={'request': request})
+            return Response(data_s.data)
 
 # class CoursePage(APIView):
 #     def get(self, request):
