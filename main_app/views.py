@@ -8,13 +8,17 @@ from main_app.serializers import *
 
 class ShowCourse(APIView):
     def get(self, request, pk):
-        data = Grade.objects.get(pk=pk)
-        data_s = GradeSerializer(data, context={'request': request})
 
-        user_courses = request.user.users.all()
+        if request.user.is_authenticated:
+            data = Grade.objects.get(pk=pk)
+            data_s = GradeSerializer(data, context={'request': request})
 
-        if data in user_courses:
-            return Response(data_s.data)
+            user_courses = request.user.users.all()
+
+            if data in user_courses:
+                return Response(data_s.data)
+            else:
+                return Response('YOU CAN NOT GET ACCESS TO THIS COURSE')
         else:
             return Response('YOU CAN NOT GET ACCESS TO THIS COURSE')
 

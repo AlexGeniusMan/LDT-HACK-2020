@@ -25,6 +25,9 @@ urlpatterns = [
     url(r'^auth/', include('djoser.urls')),
     url(r'^auth/', include('djoser.urls.jwt')),
 
+    # auth/jwt/create
+    # auth/jwt/refresh
+    # auth/jwt/verify
     path('api/my_classes', main_views.ShowMyCourses.as_view()),
     path('api/classes/<int:pk>/', main_views.ShowCourse.as_view()),
     path('api/task/<int:pk>/', main_views.ShowTask.as_view()),
