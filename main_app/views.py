@@ -28,17 +28,20 @@ class ShowTask(APIView):
 
 class ShowMyCourses(APIView):
     def get(self, request):
-        user = request.user
-        data = request.user.users.all()
-        print(data)
+        if request.user.is_authenticated:
+            user = request.user
+            data = request.user.users.all()
+            print(data)
 
-        data_s = MyCoursesSerializer(data, context={'request': request}, many=True)
+            data_s = MyCoursesSerializer(data, context={'request': request}, many=True)
 
-        if user.groups.filter(name='Учителя').exists():
-            return Response(data_s.data)
-        elif user.groups.filter(name='Ученики').exists():
-            return Response(data_s.data)
-        # user = User.objects.get(username=username)
+            if user.groups.filter(name='Учителя').exists():
+                return Response(data_s.data)
+            elif user.groups.filter(name='Ученики').exists():
+                return Response(data_s.data)
+            # user = User.objects.get(username=username)
+        else:
+            data = Grade.objects.all()
 
 # class CoursePage(APIView):
 #     def get(self, request):
