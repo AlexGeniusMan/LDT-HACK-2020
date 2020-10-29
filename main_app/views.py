@@ -19,6 +19,14 @@ class ShowTask(APIView):
         data = CurrentTaskSerializer(data, context={'request': request})
         return Response(data.data)
 
+
+class CheckUser(APIView):
+    def get(self, request):
+        username = request.data
+        print(username)
+        return Response('1')
+        # user = User.objects.get(username=username)
+
 # class CoursePage(APIView):
 #     def get(self, request):
 #
