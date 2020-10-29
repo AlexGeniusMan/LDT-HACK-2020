@@ -7,32 +7,37 @@ from main_app.serializers import *
 
 
 class ShowCourse(APIView):
-    def get(self, request):
-        data = Grade.objects.get(name='123')
-        data = GradeSerializer(data, context={'request': request})
-        return Response(data.data)
+    def get(self, request, pk):
+        data = Grade.objects.get(pk=pk)
+        data_s = GradeSerializer(data, context={'request': request})
+
+        user_courses = request.user.users.all()
+
+        if data in user_courses:
+            return Response(data_s.data)
+        else:
+            return Response('YOU CAN NOT GET ACCESS TO THIS COURSE')
 
 
 class ShowTask(APIView):
     def get(self, request, pk):
         data = Task.objects.get(pk=pk)
-        data = CurrentTaskSerializer(data, context={'request': request})
-        return Response(data.data)
+        data_s = CurrentTaskSerializer(data, context={'request': request})
+        return Response(data_s.data)
 
 
-class CheckUser(APIView):
+class ShowMyCourses(APIView):
     def get(self, request):
         user = request.user
-        # print(user.objects.prefetch_related().all())
-        # grades = Grade.objects.all()
-        # print(grades[0])
+        data = request.user.users.all()
+        print(data)
 
-        print(request.user.users.all())
+        data_s = MyCoursesSerializer(data, context={'request': request}, many=True)
 
         if user.groups.filter(name='Учителя').exists():
-            return Response('TEACHER')
+            return Response(data_s.data)
         elif user.groups.filter(name='Ученики').exists():
-            return Response('STUDENT')
+            return Response(data_s.data)
         # user = User.objects.get(username=username)
 
 # class CoursePage(APIView):

@@ -2,6 +2,13 @@ from rest_framework import serializers
 from .models import *
 
 
+class MyCoursesSerializer(serializers.ModelSerializer):
+    class Meta:
+        depth = 2
+        model = Grade
+        fields = ('id', 'name')
+
+
 class CurrentTaskDetailSerializer(serializers.ModelSerializer):
     class Meta:
         depth = 2
@@ -10,7 +17,7 @@ class CurrentTaskDetailSerializer(serializers.ModelSerializer):
 
 
 class CurrentTaskSerializer(serializers.ModelSerializer):
-    task_detail = CurrentTaskDetailSerializer(many=True, read_only=True)
+    task_detail = CurrentTaskDetailSerializer(read_only=True)
 
     class Meta:
         depth = 2
@@ -26,7 +33,7 @@ class TaskDetailSerializer(serializers.ModelSerializer):
 
 
 class TaskSerializer(serializers.ModelSerializer):
-    task_detail = TaskDetailSerializer(many=True, read_only=True)
+    task_detail = TaskDetailSerializer(read_only=True)
 
     class Meta:
         depth = 2
