@@ -31,6 +31,7 @@ urlpatterns = [
     path('api/my_classes', main_views.ShowMyClasses.as_view()),
     path('api/classes/<int:pk>/', main_views.ShowClass.as_view()),
     path('api/classes/<int:pk>/new_sprint', main_views.CreateSprint.as_view()),
+    path('api/classes/<int:pk>/new_sprint', main_views.CreateSprint.as_view()),
     path('api/tasks/<int:pk>/', main_views.ShowTask.as_view()),
     # path('show_info/', main_views.CheckUser.as_view()),
 ]

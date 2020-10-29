@@ -29,10 +29,11 @@ from .models import *
 
 # api/classes/id - creating new sprint
 class CreateSprintSerializer(serializers.ModelSerializer):
+
     class Meta:
         depth = 2
         model = Sprint
-        fields = ('name', 'grade')
+        fields = ('id', 'name', 'grade')
 
 
 # api/my_courses

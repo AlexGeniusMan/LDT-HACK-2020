@@ -12,12 +12,15 @@ from main_app.serializers import *
 #         sprint_name = request.data.sprint_name
 #         Sprint.objects.create(**validated_data)
 
-class CreateSprint(mixins.CreateModelMixin,
-                   generics.GenericAPIView):
+class CreateSprint(APIView):
     serializer_class = CreateSprintSerializer
 
     def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
+        serializer = CreateSprintSerializer(data=request.data)
+        if serializer.is_valid():
+            Sprint.objects.create(grade=Grade.objects.get(id=request.data['grade']), name=serializer.data['name'])
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 # class AddNewSprint(APIView):
