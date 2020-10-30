@@ -8,14 +8,10 @@ from main_app.models import *
 from main_app.serializers import *
 
 
-# class CreateSprint(APIView):
-#     def post(self, request):
-#         grade_id = request.data.class_id
-#         sprint_name = request.data.sprint_name
-#         Sprint.objects.create(**validated_data)
-
-
 class CreateTask(APIView):
+    """
+    Создаёт задание
+    """
 
     def post(self, request, *args, **kwargs):
         serializer = CreateTaskSerializer(data=request.data)
@@ -33,19 +29,32 @@ class CreateTask(APIView):
 
 
 class ShowTask(APIView):
+    """
+    Показывает задание
+    """
+
     def get(self, request, pk):
         data = Task.objects.get(pk=pk)
-        data_s = CurrentTaskSerializer(data, context={'request': request})
-        return Response(data_s.data)
+        serialized_data = CurrentTaskSerializer(data, context={'request': request})
+        return Response(serialized_data.data)
+
 
 class DeleteTask(DestroyAPIView):
+    """
+    Удаляет задание
+    """
     queryset = Task.objects.all()
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
 
-class CreateSprint(APIView):
+class CreateBlock(APIView):
+    """
+    Создаёт блок
+    """
+
+    queryset = Sprint.objects.all()
 
     def post(self, request, *args, **kwargs):
         serializer = CreateSprintSerializer(data=request.data)
@@ -57,24 +66,21 @@ class CreateSprint(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-class DeleteSprint(DestroyAPIView):
+class DeleteBlock(DestroyAPIView):
+    """
+    Удаляет блок
+    """
+
     queryset = Sprint.objects.all()
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
 
-# class AddNewSprint(APIView):
-#     def post(self, request):
-#         grade_id = request.data.class_id
-#         sprint_name = request.data.sprint_name
-
 
 class ShowClass(APIView):
     """
-    Возвращает конкретный класс
+    Возвращает класс
     """
-
-    permission_classes = (IsAuthenticated,)
 
     def get(self, request, pk):
         grade = Grade.objects.get(pk=pk)
@@ -92,8 +98,6 @@ class ShowMyClasses(APIView):
     Возвращает классы пользователя
     """
 
-    permission_classes = (IsAuthenticated,)
-
     def get(self, request):
         data = request.user.grades.all()
         serialized_data = MyCoursesSerializer(data, context={'request': request}, many=True)
@@ -107,8 +111,6 @@ class CoursePage(APIView):
     """
     Возвращает статус пользователя
     """
-
-    permission_classes = (IsAuthenticated,)
 
     def get(self, request):
         if request.user.groups.filter(name='Учителя').exists():

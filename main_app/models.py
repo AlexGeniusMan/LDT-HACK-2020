@@ -66,11 +66,6 @@ class Grade(models.Model):
 class User(AbstractUser):
     middle_name = models.CharField(_("middle name"), max_length=30, blank=True)
 
-    # teacher = 'Учитель'
-    # student = 'Ученик'
-    # status_choices = [(teacher, 'Учитель'), (student, 'Ученик')]
-    # status = models.CharField('Status', choices=status_choices, default='Ученик', max_length=255)
-
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
