@@ -7,14 +7,6 @@ from django.conf import settings
 from multiselectfield import MultiSelectField
 
 
-# class Test(models.Model):
-#     name = models.CharField(_("task name"), max_length=30, blank=True)
-#     theory = models.CharField(_("theory content"), max_length=30, blank=True)
-#     Grade = models.ForeignKey('Grade', on_delete=models.PROTECT)
-#
-#     def __str__(self):
-#         return self.name
-
 class Test(models.Model):
     question = models.TextField("Входные данные", blank=True)
     answer = models.TextField("Выходные данные", blank=True)
@@ -22,9 +14,9 @@ class Test(models.Model):
 
 
 class TaskDetail(models.Model):
-    is_done = models.BooleanField(_('Статус'))
-    students = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Учащийся', on_delete=models.PROTECT)
-    task = models.ForeignKey('Task', verbose_name='Задание', on_delete=models.PROTECT, related_name='task_detail')
+    is_done = models.BooleanField(_('Статус'), default=False)
+    students = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Учащийся', on_delete=models.CASCADE)
+    task = models.ForeignKey('Task', verbose_name='Задание', on_delete=models.CASCADE, related_name='task_detail')
     last_code = models.CharField(_("Последний запущенный код"), max_length=300, blank=True)
 
 
@@ -39,11 +31,9 @@ class Task(models.Model):
     name = models.CharField(_("Название задания"), max_length=30, blank=True)
     theory = models.CharField(_("Теоретическое введение"), max_length=30, blank=True)
     mission = models.CharField(_("Техническое задание"), max_length=30, blank=True)
-    sprint = models.ForeignKey('Sprint', on_delete=models.PROTECT, related_name='tasks')
+    sprint = models.ForeignKey('Sprint', on_delete=models.CASCADE, related_name='tasks')
     students = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name='Учащиеся', through=TaskDetail)
     languages = MultiSelectField(choices=LANGUAGES, default='python')
-
-    # языки
 
     def __str__(self):
         return self.name
@@ -51,7 +41,7 @@ class Task(models.Model):
 
 class Sprint(models.Model):
     name = models.CharField(_("Название спринта"), max_length=30, blank=True)
-    grade = models.ForeignKey('Grade', on_delete=models.PROTECT, verbose_name='Класс', related_name='sprints')
+    grade = models.ForeignKey('Grade', on_delete=models.CASCADE, verbose_name='Класс', related_name='sprints')
 
     class Meta:
         verbose_name = 'Спринт'
@@ -63,7 +53,7 @@ class Sprint(models.Model):
 
 class Grade(models.Model):
     name = models.CharField(_("Название класса"), max_length=30, blank=True)
-    users = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name='Пользователи', related_name='users')
+    grades = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name='Пользователи', related_name='users')
 
     class Meta:
         verbose_name = 'Класс'

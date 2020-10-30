@@ -25,13 +25,21 @@ urlpatterns = [
     url(r'^auth/', include('djoser.urls')),
     url(r'^auth/', include('djoser.urls.jwt')),
 
-    # auth/jwt/create
-    # auth/jwt/refresh
-    # auth/jwt/verify
-    path('api/my_classes', main_views.ShowMyClasses.as_view()),
+    path('api/my_classes', main_views.ShowMyClasses.as_view()),     # get
+
+    path('api/get_status', main_views.CoursePage.as_view()),        # get
+
     path('api/classes/<int:pk>/', main_views.ShowClass.as_view()),
-    path('api/classes/<int:pk>/new_sprint', main_views.CreateSprint.as_view()),
-    path('api/classes/<int:pk>/new_sprint', main_views.CreateSprint.as_view()),
-    path('api/tasks/<int:pk>/', main_views.ShowTask.as_view()),
-    # path('show_info/', main_views.CheckUser.as_view()),
+
+    path('api/classes/<int:pk>/new_block', main_views.CreateSprint.as_view()),
+
+    path('api/blocks/<int:pk>/new_task', main_views.CreateTask.as_view()),
+
+    # path('api/tasks/<int:pk>/', main_views.ShowChangeDeleteTask.as_view()),
+    path('api/tasks/<int:pk>/delete', main_views.DeleteTask.as_view()),
+    # path('api/tasks/<int:pk>/change', main_views.ChangeTask.as_view()),
+
+    path('api/sprints/<int:pk>/delete', main_views.DeleteSprint.as_view()),
+    # path('api/sprints/<int:pk>/change', main_views.ChangeSprint.as_view()),
+
 ]

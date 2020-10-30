@@ -7,7 +7,7 @@ from .models import *
 
 class GradeAdmin(admin.ModelAdmin):
     filter_horizontal = [
-        'users',
+        'grades',
     ]
 
     def __str__(self):

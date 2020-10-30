@@ -27,6 +27,16 @@ from .models import *
 #         model = Sprint
 #         fields = ('name', 'sprints')
 
+
+# api/classes/id - creating new task
+class CreateTaskSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        depth = 2
+        model = Task
+        fields = ('id', 'name', 'theory', 'mission', 'sprint')
+
+
 # api/classes/id - creating new sprint
 class CreateSprintSerializer(serializers.ModelSerializer):
 
