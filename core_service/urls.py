@@ -29,7 +29,7 @@ urlpatterns = [
 
     path('api/get_status', main_views.CoursePage.as_view()),        # get
 
-    path('api/classes/<int:pk>/', main_views.ShowClass.as_view()),
+    path('api/classes/<int:pk>/', main_views.ShowClass.as_view()),  # get
 
     path('api/classes/<int:pk>/new_block', main_views.CreateSprint.as_view()),
 

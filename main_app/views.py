@@ -87,7 +87,6 @@ class ShowClass(APIView):
             return Response(status.HTTP_403_FORBIDDEN)
 
 
-
 class ShowMyClasses(APIView):
     """
     Возвращает классы пользователя
@@ -108,10 +107,13 @@ class CoursePage(APIView):
     """
     Возвращает статус пользователя
     """
+
+    permission_classes = (IsAuthenticated,)
+
     def get(self, request):
         if request.user.groups.filter(name='Учителя').exists():
             return Response('TEACHER')
         elif request.user.groups.filter(name='Ученики').exists():
             return Response('STUDENT')
         else:
-            return Response('USER IS NOT IN THE CLASS OR IS NOT AUTHORIZED')
+            return Response('USER IS NOT IN THE GROUP')

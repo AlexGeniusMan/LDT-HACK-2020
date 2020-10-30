@@ -53,7 +53,7 @@ class Sprint(models.Model):
 
 class Grade(models.Model):
     name = models.CharField(_("Название класса"), max_length=30, blank=True)
-    grades = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name='Пользователи', related_name='users')
+    grades = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name='Пользователи', related_name='grades')
 
     class Meta:
         verbose_name = 'Класс'
