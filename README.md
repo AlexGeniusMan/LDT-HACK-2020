@@ -170,6 +170,17 @@ Args:
 
 "languages": "python3, cpp" (now available: python3, cpp, c)
 
+```
+"tests": [
+    {
+        "question": "example question",
+        "answer": "example answer",
+        "is_visible": true
+    },
+    {...}
+],
+```
+
 returns 1 if success
 
 
