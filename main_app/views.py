@@ -45,11 +45,20 @@ class ShowTask(APIView):
     """
 
     def get(self, request, pk):
-        task = Task.objects.get(pk=pk)
-        serialized_task = CurrentTaskSerializer(task, context={'request': request})
-        tests = Test.objects.filter(task=task, is_visible=True)
-        serialized_tests = TestSerializer(tests, context={'request': request}, many=True)
-        return Response({'task': serialized_task.data, 'tests':serialized_tests.data}, status.HTTP_200_OK)
+        if request.user.groups.filter(name='Учителя').exists():
+            task = Task.objects.get(pk=pk)
+            serialized_task = CurrentTaskSerializer(task, context={'request': request})
+            tests = Test.objects.filter(task=task)
+            serialized_tests = TestSerializer(tests, context={'request': request}, many=True)
+            return Response({'task': serialized_task.data, 'tests': serialized_tests.data}, status.HTTP_200_OK)
+        elif request.user.groups.filter(name='Ученики').exists():
+            task = Task.objects.get(pk=pk)
+            serialized_task = CurrentTaskSerializer(task, context={'request': request})
+            tests = Test.objects.filter(task=task, is_visible=True)
+            serialized_tests = TestSerializer(tests, context={'request': request}, many=True)
+            return Response({'task': serialized_task.data, 'tests': serialized_tests.data}, status.HTTP_200_OK)
+        else:
+            Response(status.HTTP_403_FORBIDDEN)
 
 
 class DeleteTask(DestroyAPIView):

@@ -66,6 +66,7 @@ class Grade(models.Model):
 
 class User(AbstractUser):
     middle_name = models.CharField(_("middle name"), max_length=64, blank=True)
+    # date_of_birth = models.DateField('Дата рождения', default="01_01_2000")
 
     class Meta:
         verbose_name = 'Пользователь'
