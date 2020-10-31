@@ -18,7 +18,7 @@ class GradeAdmin(admin.ModelAdmin):
 class CustomUserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        (_('Personal info'), {'fields': ('last_name', 'first_name', 'middle_name', 'email')}),
+        (_('Personal info'), {'fields': ('last_name', 'first_name', 'middle_name', 'email', 'date_of_birth', 'school')}),
         (_('Permissions'), {
             'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions'),
         }),

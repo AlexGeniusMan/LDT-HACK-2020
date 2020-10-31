@@ -26,6 +26,8 @@ urlpatterns = [
 
     path('api/get_status', main_views.CoursePage.as_view()),                    # GET - gets user status (student or teacher)
 
+    path('api/lk', main_views.UserLK.as_view()),                                # GET - gets user properties
+
     path('api/my_classes', main_views.ShowMyClasses.as_view()),                 # GET - gets classes of current user
 
     path('api/classes/<int:pk>/', main_views.ShowClass.as_view()),              # GET - gets current block of tasks

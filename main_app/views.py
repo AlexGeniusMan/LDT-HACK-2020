@@ -1,4 +1,4 @@
-from rest_framework.generics import DestroyAPIView, UpdateAPIView
+from rest_framework.generics import DestroyAPIView, UpdateAPIView, RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -174,6 +174,16 @@ class CoursePage(APIView):
             return Response('STUDENT')
         else:
             return Response('USER_IS_NOT_IN_THE_GROUP')
+
+
+class UserLK(APIView):
+    """
+    Возвращает статус пользователя
+    """
+
+    def get(self, request):
+        serializer = UserSerializer(request.user)
+        return Response({'data': serializer.data})
 
 
 class CodeChecker(APIView):

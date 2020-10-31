@@ -2,6 +2,13 @@ from rest_framework import serializers
 from .models import *
 
 
+# api/lk
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'first_name', 'middle_name', 'last_name', 'email', 'school', 'date_of_birth')
+
+
 # api/tasks/id
 class TestSerializer(serializers.ModelSerializer):
     class Meta:
