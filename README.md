@@ -211,6 +211,15 @@ Args: (send only args that you want to change)
 }
 ```
 
+### /api/tasks/<int:pk>/delete
+>deletes current task
+
+#### method: DELETE
+
+just send this request to URL, that contains tasks's id
+
+returns 1 if success
+
 
 ### /api/tasks/<int:pk>/send_code
 >Returns an object with status of the request and list of test. In each test you can check it's number in order and status (true or false)
