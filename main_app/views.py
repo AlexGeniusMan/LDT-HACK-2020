@@ -5,6 +5,9 @@ from rest_framework import status
 from rest_framework import generics, mixins
 from main_app.models import *
 from main_app.serializers import *
+import requests
+from base64 import encodebytes
+from django.http import JsonResponse
 
 
 class CreateTask(APIView):
@@ -129,3 +132,55 @@ class CoursePage(APIView):
             return Response('STUDENT')
         else:
             return Response('USER IS NOT IN THE GROUP')
+
+
+class CodeChecker(APIView):
+    """
+    Отправляет код на проверку
+    """
+
+    def post(self, request, pk):
+
+        key = 'kek'
+        language = request.POST['language']
+
+        code = encodebytes('''
+        #include <iostream>
+
+        using namespace std;
+
+        int main() {
+        int a,b;
+        cin >> a >> b;
+        cout << a + b;
+
+        }
+        '''.encode()).decode('UTF-8')
+
+        code = encodebytes(request.POST['code'].encode()).decode('UTF-8')
+
+        tests_query = Test.objects.filter(task=request.POST['task_id'])
+        tests = list()
+        for el in tests_query:
+            temp_dict = {
+                'request': el.question.replace('\r', '') + '\n',
+                'answer': el.answer.replace('\r', '')
+            }
+            tests.append(temp_dict)
+
+        time_limit_millis = request.POST['time_limit_millis']
+        user_id = request.user.id
+
+        ej_response = requests.post(
+            'http://188.120.248.65:8065/ejapi/tasks/run',
+            json={
+                'key': key,
+                'language': language,
+                'code': code,
+                'tests': [{'request': '1\n1\n', 'answer': '2'}, {'request': '2\n3\n', 'answer': '4'}],
+                'time_limit_millis': time_limit_millis,
+                'user_id': user_id
+            }
+        )
+        print(ej_response.text)
+        return Response(ej_response)
