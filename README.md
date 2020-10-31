@@ -193,9 +193,26 @@ Args: (send only args that you want to change)
 
 "name": "ex name"
 
-"mission": "ex practice"
+"theory": "ex theory"
+
+"mission": "ex mission"
+
+"sprint": "" (block id - tak it from URL)
+
+"languages": "python3, cpp" (now available: python3, cpp, c)
 
 "task_id": 7 (take it from URL)
+
+```
+"tests": [
+    {
+        "question": "example question",
+        "answer": "example answer",
+        "is_visible": true
+    },
+    {...}
+],
+```
 ```
 {
     "id": 20,
