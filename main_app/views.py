@@ -8,6 +8,7 @@ from main_app.serializers import *
 import requests
 from base64 import encodebytes
 from django.http import JsonResponse
+import json
 
 
 class CreateTask(APIView):
@@ -23,7 +24,7 @@ class CreateTask(APIView):
                         theory=serializer.data['theory'],
                         mission=serializer.data['mission'],
                         sprint=Sprint.objects.get(id=request.data['sprint']),
-                        languages=request.data['languages'].split(','),)
+                        languages=request.data['languages'].split(','), )
             task.save()
             task.students.set(User.objects.filter(grades=request.POST.get('grade')))
             return Response(status=status.HTTP_201_CREATED)
@@ -70,8 +71,8 @@ class CreateBlock(APIView):
             print(serializer.data)
             Sprint.objects.create(grade=Grade.objects.get(id=request.data['grade']),
                                   name=serializer.data['name'])
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response(status=status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 class DeleteBlock(DestroyAPIView):
@@ -140,24 +141,25 @@ class CodeChecker(APIView):
     """
 
     def post(self, request, pk):
-
         key = 'kek'
         language = request.POST['language']
 
-        code = encodebytes('''
-        #include <iostream>
+#         code = encodebytes('''#include <iostream>
+#
+# using namespace std;
+#
+# int main() {
+# int a,b;
+# cin >> a >> b;
+# cout << a + b;
+#
+# }'''.encode()).decode('UTF-8')
 
-        using namespace std;
+        # print(request.POST['code'])
+        # print(request.POST['code'].replace('↵', '\n'))
+        # print(request.POST['code'].replace('\n', '↵'))
 
-        int main() {
-        int a,b;
-        cin >> a >> b;
-        cout << a + b;
-
-        }
-        '''.encode()).decode('UTF-8')
-
-        code = encodebytes(request.POST['code'].encode()).decode('UTF-8')
+        code = encodebytes(request.POST['code'].replace('↵', '\n').encode()).decode('UTF-8')
 
         tests_query = Test.objects.filter(task=request.POST['task_id'])
         tests = list()
@@ -182,5 +184,23 @@ class CodeChecker(APIView):
                 'user_id': user_id
             }
         )
-        print(ej_response.text)
-        return Response(ej_response)
+
+        ej_response = json.loads(ej_response.text)
+
+        if ej_response['body'] == 'Compilation error':
+            return Response(ej_response['error'])
+        else:
+            ej_tests = list()
+            for el in ej_response['body']:
+                ej_temp_dict = {
+                    'test_num': el['test_num'],
+                    'status': el['status'],
+                    'error': el['stderr']
+                }
+                ej_tests.append(ej_temp_dict)
+
+            data = {
+                'status': ej_response['status'],
+                'tests': ej_tests
+            }
+        return Response(data)
