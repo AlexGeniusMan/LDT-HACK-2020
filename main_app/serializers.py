@@ -2,46 +2,12 @@ from rest_framework import serializers
 from .models import *
 
 
-# api/blocks/id/new_task - creating new task
-class ChangeBlockSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Task
-        fields = ('id', 'name')
-
-
-# api/blocks/id/new_task - creating new task
-class CreateChangeTaskSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        depth = 2
-        model = Task
-        fields = ('id', 'name', 'theory', 'mission', 'sprint')
-
-
-# api/classes/id/new_block - creating new sprint
-class CreateSprintSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        depth = 2
-        model = Sprint
-        fields = ('id', 'name', 'grade')
-
-
-# api/my_classes
-class MyCoursesSerializer(serializers.ModelSerializer):
-    class Meta:
-        depth = 2
-        model = Grade
-        fields = ('id', 'name')
-
-
 # api/tasks/id
 class TestSerializer(serializers.ModelSerializer):
     class Meta:
         depth = 2
         model = Test
-        fields = ('id', 'question', 'answer')
+        fields = ('id', 'question', 'answer', 'is_visible')
 
 
 class CurrentTaskDetailSerializer(serializers.ModelSerializer):
@@ -59,6 +25,41 @@ class CurrentTaskSerializer(serializers.ModelSerializer):
         depth = 2
         model = Task
         fields = ('id', 'name', 'theory', 'mission', 'task_detail', 'languages', 'tests')
+
+
+# api/blocks/id/new_task - creating new task
+class ChangeBlockSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Task
+        fields = ('id', 'name')
+
+
+# api/blocks/id/new_task - creating new task
+class CreateChangeTaskSerializer(serializers.ModelSerializer):
+    test = TestSerializer(read_only=True, many=True)
+
+    class Meta:
+        depth = 2
+        model = Task
+        fields = ('id', 'name', 'theory', 'mission', 'sprint', 'test')
+
+
+# api/classes/id/new_block - creating new sprint
+class CreateSprintSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        depth = 2
+        model = Sprint
+        fields = ('id', 'name', 'grade')
+
+
+# api/my_classes
+class MyCoursesSerializer(serializers.ModelSerializer):
+    class Meta:
+        depth = 2
+        model = Grade
+        fields = ('id', 'name')
 
 
 # api/classes/id

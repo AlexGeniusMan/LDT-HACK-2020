@@ -19,15 +19,23 @@ class CreateTask(APIView):
     def post(self, request, *args, **kwargs):
         serializer = CreateChangeTaskSerializer(data=request.data)
         if serializer.is_valid():
-            print(serializer.data)
             task = Task(name=serializer.data['name'],
                         theory=serializer.data['theory'],
                         mission=serializer.data['mission'],
                         sprint=Sprint.objects.get(id=request.data['sprint']),
-                        languages=request.data['languages'].split(','), )
+                        languages=request.data['languages'].split(','),)
             task.save()
             task.students.set(User.objects.filter(grades=request.POST.get('grade')))
-            return Response(status=status.HTTP_201_CREATED)
+
+            serializer = TestSerializer(data=request.data['tests'], many=True)
+            if serializer.is_valid():
+                for serialized_dict in serializer.data:
+                    test = Test(question=serialized_dict['question'],
+                                answer=serialized_dict['answer'],
+                                is_visible=serialized_dict['is_visible'],
+                                task=task)
+                    test.save()
+                return Response(status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
@@ -37,9 +45,11 @@ class ShowTask(APIView):
     """
 
     def get(self, request, pk):
-        data = Task.objects.get(pk=pk)
-        serialized_data = CurrentTaskSerializer(data, context={'request': request})
-        return Response(serialized_data.data)
+        task = Task.objects.get(pk=pk)
+        serialized_task = CurrentTaskSerializer(task, context={'request': request})
+        tests = Test.objects.filter(task=task, is_visible=True)
+        serialized_tests = TestSerializer(tests, context={'request': request}, many=True)
+        return Response({'task': serialized_task.data, 'tests':serialized_tests.data}, status.HTTP_200_OK)
 
 
 class DeleteTask(DestroyAPIView):
@@ -54,8 +64,31 @@ class DeleteTask(DestroyAPIView):
 
 
 class ChangeTask(UpdateAPIView):
+    """
+    Изменяет задание
+    """
+
     queryset = Task.objects.all()
     serializer_class = CreateChangeTaskSerializer
+
+    def change_tests(self, request, pk):
+        task = Task.objects.get(pk=pk)
+        tests = Test.objects.filter(task=task)
+        for test in tests:
+            test.delete()
+        serializer = TestSerializer(data=request.data['tests'], many=True)
+        if serializer.is_valid():
+            for serialized_dict in serializer.data:
+                test = Test(question=serialized_dict['question'],
+                            answer=serialized_dict['answer'],
+                            is_visible=serialized_dict['is_visible'],
+                            task=task)
+                test.save()
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def put(self, request, *args, **kwargs):
+        self.change_tests(request, kwargs['pk'])
+        return self.update(request, *args, **kwargs)
 
 
 class CreateBlock(APIView):
@@ -68,7 +101,6 @@ class CreateBlock(APIView):
     def post(self, request, *args, **kwargs):
         serializer = CreateSprintSerializer(data=request.data)
         if serializer.is_valid():
-            print(serializer.data)
             Sprint.objects.create(grade=Grade.objects.get(id=request.data['grade']),
                                   name=serializer.data['name'])
             return Response(status=status.HTTP_201_CREATED)
@@ -179,7 +211,7 @@ class CodeChecker(APIView):
                 'key': key,
                 'language': language,
                 'code': code,
-                'tests': [{'request': '1\n1\n', 'answer': '2'}, {'request': '2\n3\n', 'answer': '4'}],
+                'tests': tests,
                 'time_limit_millis': time_limit_millis,
                 'user_id': user_id
             }
@@ -190,8 +222,11 @@ class CodeChecker(APIView):
         if ej_response['body'] == 'Compilation error':
             return Response(ej_response['error'])
         else:
+            is_done = True
             ej_tests = list()
             for el in ej_response['body']:
+                if not el['status']:
+                    is_done = False
                 ej_temp_dict = {
                     'test_num': el['test_num'],
                     'status': el['status'],
@@ -203,18 +238,9 @@ class CodeChecker(APIView):
                 'status': ej_response['status'],
                 'tests': ej_tests
             }
+        if is_done:
+            task_detail = TaskDetail.objects.get(task=request.POST['task_id'], students=request.user.id)
+            task_detail.is_done = True
+            task_detail.save()
 
-        ej_tests = list()
-        for el in ej_response['body']:
-            ej_temp_dict = {
-                'test_num': el['test_num'],
-                'status': el['status'],
-                'error': el['stderr']
-            }
-            ej_tests.append(ej_temp_dict)
-
-        data = {
-            'status': ej_response['status'],
-            'tests': ej_tests
-        }
         return Response(json.dumps(data))

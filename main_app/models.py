@@ -10,11 +10,12 @@ from multiselectfield import MultiSelectField
 class Test(models.Model):
     question = models.TextField("Входные данные", blank=True)
     answer = models.TextField("Выходные данные", blank=True)
-    task = models.ForeignKey('Task', verbose_name='Тест', on_delete=models.PROTECT, related_name='test')
+    task = models.ForeignKey('Task', verbose_name='Тест', on_delete=models.CASCADE, related_name='test')
+    is_visible = models.BooleanField(_('Является видимым'), default=False)
 
 
 class TaskDetail(models.Model):
-    is_done = models.BooleanField(_('Статус'), default=False)
+    is_done = models.BooleanField(_('Является сделанным'), default=False)
     students = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Учащийся', on_delete=models.CASCADE)
     task = models.ForeignKey('Task', verbose_name='Задание', on_delete=models.CASCADE, related_name='task_detail')
     last_code = models.TextField(_("Последний запущенный код"), blank=True)
