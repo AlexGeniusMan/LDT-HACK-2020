@@ -128,6 +128,90 @@ Args:
 returns HTTP_200_OK or HTTP_400_BAD_REQUEST
 
 
+### /api/tasks/20
+>Returns current task and it's details for current user
+
+#### method: GET
+
+response example:
+```
+{
+    "id": 20,
+    "name": "Example name",
+    "theory": "Theory",
+    "mission": "Practice",
+    "task_detail": [
+        {
+            "id": 16,
+            "is_done": true,
+            "last_code": "a=1"
+        }
+    ],
+    "languages": [
+        "python"
+    ]
+}
+```
+
+### /api/blocks/<int:pk>/new_task
+>Creates new task in current block
+
+#### method: POST
+
+Args:
+
+"name": "ex name"
+
+"theory": "ex theory"
+
+"mission": "ex mission"
+
+"sprint": "" (block id - tak it from URL)
+
+"languages": "python3, cpp" (now available: python3, cpp, c)
+
+returns 1 if success
+
+
+### /api/tasks/<int:pk>/change
+>changes current task and returns new changed task
+
+#### method: PUT
+
+Args: (send only args that you want to change)
+
+"name": "ex name"
+
+"mission": "ex practice"
+
+"task_id": 7 (take it from URL)
+```
+{
+    "id": 20,
+    "name": "ex name",
+    "theory": "Теория",
+    "mission": "ex practice",
+    "sprint": {
+        "id": 9,
+        "name": "Блок 13",
+        "grade": {
+            "id": 7,
+            "name": "Класс 13",
+            "grades": [
+                1,
+                2,
+                3,
+                5,
+                6,
+                7,
+                8
+            ]
+        }
+    }
+}
+```
+
+
 ### /api/tasks/<int:pk>/send_code
 >Returns an object with status of the request and list of test. In each test you can check it's number in order and status (true or false)
 
