@@ -1,5 +1,4 @@
-from rest_framework.generics import DestroyAPIView
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.generics import DestroyAPIView, UpdateAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -14,7 +13,7 @@ class CreateTask(APIView):
     """
 
     def post(self, request, *args, **kwargs):
-        serializer = CreateTaskSerializer(data=request.data)
+        serializer = CreateChangeTaskSerializer(data=request.data)
         if serializer.is_valid():
             print(serializer.data)
             task = Task(name=serializer.data['name'],
@@ -43,10 +42,16 @@ class DeleteTask(DestroyAPIView):
     """
     Удаляет задание
     """
+
     queryset = Task.objects.all()
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+
+class ChangeTask(UpdateAPIView):
+    queryset = Task.objects.all()
+    serializer_class = CreateChangeTaskSerializer
 
 
 class CreateBlock(APIView):
@@ -75,6 +80,11 @@ class DeleteBlock(DestroyAPIView):
 
     def delete(self, request, *args, **kwargs):
         return self.destroy(request, *args, **kwargs)
+
+
+class ChangeBlock(UpdateAPIView):
+    queryset = Sprint.objects.all()
+    serializer_class = ChangeBlockSerializer
 
 
 class ShowClass(APIView):

@@ -17,7 +17,7 @@ class TaskDetail(models.Model):
     is_done = models.BooleanField(_('Статус'), default=False)
     students = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Учащийся', on_delete=models.CASCADE)
     task = models.ForeignKey('Task', verbose_name='Задание', on_delete=models.CASCADE, related_name='task_detail')
-    last_code = models.CharField(_("Последний запущенный код"), max_length=300, blank=True)
+    last_code = models.TextField(_("Последний запущенный код"), blank=True)
 
 
 LANGUAGES = (('python', 'Python'),
@@ -28,9 +28,9 @@ LANGUAGES = (('python', 'Python'),
 
 
 class Task(models.Model):
-    name = models.CharField(_("Название задания"), max_length=30, blank=True)
-    theory = models.CharField(_("Теоретическое введение"), max_length=30, blank=True)
-    mission = models.CharField(_("Техническое задание"), max_length=30, blank=True)
+    name = models.CharField(_("Название задания"), max_length=64, blank=True)
+    theory = models.TextField(_("Теоретическое введение"), blank=True)
+    mission = models.TextField(_("Техническое задание"), max_length=64, blank=True)
     sprint = models.ForeignKey('Sprint', on_delete=models.CASCADE, related_name='tasks')
     students = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name='Учащиеся', through=TaskDetail)
     languages = MultiSelectField(choices=LANGUAGES, default='python')
@@ -40,19 +40,19 @@ class Task(models.Model):
 
 
 class Sprint(models.Model):
-    name = models.CharField(_("Название спринта"), max_length=30, blank=True)
+    name = models.CharField(_("Название спринта"), max_length=64, blank=True)
     grade = models.ForeignKey('Grade', on_delete=models.CASCADE, verbose_name='Класс', related_name='sprints')
 
     class Meta:
-        verbose_name = 'Спринт'
-        verbose_name_plural = 'Спринты'
+        verbose_name = 'Блок'
+        verbose_name_plural = 'Блоки'
 
     def __str__(self):
         return self.name
 
 
 class Grade(models.Model):
-    name = models.CharField(_("Название класса"), max_length=30, blank=True)
+    name = models.CharField(_("Название класса"), max_length=64, blank=True)
     grades = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name='Пользователи', related_name='grades')
 
     class Meta:
@@ -64,7 +64,7 @@ class Grade(models.Model):
 
 
 class User(AbstractUser):
-    middle_name = models.CharField(_("middle name"), max_length=30, blank=True)
+    middle_name = models.CharField(_("middle name"), max_length=64, blank=True)
 
     class Meta:
         verbose_name = 'Пользователь'

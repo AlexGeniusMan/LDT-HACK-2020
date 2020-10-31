@@ -3,7 +3,15 @@ from .models import *
 
 
 # api/blocks/id/new_task - creating new task
-class CreateTaskSerializer(serializers.ModelSerializer):
+class ChangeBlockSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Task
+        fields = ('id', 'name')
+
+
+# api/blocks/id/new_task - creating new task
+class CreateChangeTaskSerializer(serializers.ModelSerializer):
 
     class Meta:
         depth = 2
@@ -32,7 +40,7 @@ class MyCoursesSerializer(serializers.ModelSerializer):
 class TestSerializer(serializers.ModelSerializer):
     class Meta:
         depth = 2
-        model = Task
+        model = Test
         fields = ('id', 'question', 'answer')
 
 

@@ -33,12 +33,12 @@ urlpatterns = [
 
     path('api/classes/<int:pk>/new_block', main_views.CreateBlock.as_view()),   # post
     path('api/blocks/<int:pk>/delete', main_views.DeleteBlock.as_view()),       # delete
-    # path('api/sprints/<int:pk>/change', main_views.ChangeSprint.as_view()),
+    path('api/blocks/<int:pk>/change', main_views.ChangeBlock.as_view()),       # put
 
     path('api/tasks/<int:pk>/', main_views.ShowTask.as_view()),                 # get
     path('api/blocks/<int:pk>/new_task', main_views.CreateTask.as_view()),      # post
     path('api/tasks/<int:pk>/delete', main_views.DeleteTask.as_view()),         # delete
-    # path('api/tasks/<int:pk>/change', main_views.ChangeTask.as_view()),
+    path('api/tasks/<int:pk>/change', main_views.ChangeTask.as_view()),         # put
 
 
 ]
