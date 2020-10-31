@@ -126,3 +126,54 @@ Args:
 "name": str (optionaly)
 
 returns HTTP_200_OK or HTTP_400_BAD_REQUEST
+
+
+### /api/tasks/<int:pk>/send_code
+>Returns an object with status of the request and list of test. In each test you can check it's number in order and status (true or false)
+
+#### method: POST
+
+
+Args:
+
+"language": "cpp" (now available: python3, cpp, c)
+
+"time_limit_millis": 1000
+
+"task_id": 7 (take it from URL)
+
+"code": "#include <iostream>↵↵using namespace std;↵↵int main() {↵int a,b;↵cin >> a >> b;↵cout << a + b;↵↵}"
+
+course code:
+```
+#include <iostream>
+
+using namespace std;
+
+int main() {
+int a,b;
+cin >> a >> b;
+cout << a + b;
+
+}
+```
+
+
+response example:
+```
+{
+    "status": true,
+    "tests": [
+        {
+            "test_num": 0,
+            "status": true,
+            "error": "task_Start: execv(1): /home/ejudge/solves/1/19/in 0<input.txt\nStatus: OK\nCPUTime: 5\nRealTime: 6\nVMSize: 434176\n"
+        },
+        {
+            "test_num": 1,
+            "status": false,
+            "error": "task_Start: execv(1): /home/ejudge/solves/1/19/in 0<input.txt\nStatus: OK\nCPUTime: 3\nRealTime: 5\nVMSize: 2412544\n"
+        }
+    ]
+}
+```
