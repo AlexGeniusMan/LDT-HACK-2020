@@ -185,7 +185,7 @@ class CodeChecker(APIView):
             }
         )
 
-        ej_response = json.loads(ej_response.text)
+        ej_response = ej_response.json()
 
         if ej_response['body'] == 'Compilation error':
             return Response(ej_response['error'])
@@ -203,8 +203,6 @@ class CodeChecker(APIView):
                 'status': ej_response['status'],
                 'tests': ej_tests
             }
-
-        ej_response = json.loads(ej_response.text)
 
         ej_tests = list()
         for el in ej_response['body']:
