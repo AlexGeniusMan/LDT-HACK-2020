@@ -217,4 +217,4 @@ class CodeChecker(APIView):
             'status': ej_response['status'],
             'tests': ej_tests
         }
-        return Response(data)
+        return Response(json.dumps(data))
