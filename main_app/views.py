@@ -144,16 +144,16 @@ class CodeChecker(APIView):
         key = 'kek'
         language = request.POST['language']
 
-#         code = encodebytes('''#include <iostream>
-#
-# using namespace std;
-#
-# int main() {
-# int a,b;
-# cin >> a >> b;
-# cout << a + b;
-#
-# }'''.encode()).decode('UTF-8')
+        #         code = encodebytes('''#include <iostream>
+        #
+        # using namespace std;
+        #
+        # int main() {
+        # int a,b;
+        # cin >> a >> b;
+        # cout << a + b;
+        #
+        # }'''.encode()).decode('UTF-8')
 
         # print(request.POST['code'])
         # print(request.POST['code'].replace('↵', '\n'))
@@ -184,7 +184,25 @@ class CodeChecker(APIView):
                 'user_id': user_id
             }
         )
-        # print(ej_response.text)
+
+        ej_response = json.loads(ej_response.text)
+
+        if ej_response['body'] == 'Compilation error':
+            return Response(ej_response['error'])
+        else:
+            ej_tests = list()
+            for el in ej_response['body']:
+                ej_temp_dict = {
+                    'test_num': el['test_num'],
+                    'status': el['status'],
+                    'error': el['stderr']
+                }
+                ej_tests.append(ej_temp_dict)
+
+            data = {
+                'status': ej_response['status'],
+                'tests': ej_tests
+            }
 
         ej_response = json.loads(ej_response.text)
 
