@@ -131,7 +131,7 @@ class CoursePage(APIView):
         elif request.user.groups.filter(name='Ученики').exists():
             return Response('STUDENT')
         else:
-            return Response('USER IS NOT IN THE GROUP')
+            return Response('USER_IS_NOT_IN_THE_GROUP')
 
 
 class CodeChecker(APIView):

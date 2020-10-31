@@ -16,7 +16,6 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path, include
-# djoser.url.jwt
 import main_app.views as main_views
 
 urlpatterns = [
@@ -40,5 +39,5 @@ urlpatterns = [
     path('api/tasks/<int:pk>/delete', main_views.DeleteTask.as_view()),         # delete
     path('api/tasks/<int:pk>/change', main_views.ChangeTask.as_view()),         # put
 
-    path('api/tasks/<int:pk>/send_code', main_views.CodeChecker.as_view()),
+    path('api/tasks/<int:pk>/send_code', main_views.CodeChecker.as_view()),     # post
 ]
