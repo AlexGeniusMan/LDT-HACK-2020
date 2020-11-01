@@ -5,8 +5,21 @@ THE LEADERS OF THE DIGITAL TRANSFORMATION HACATON 2020
 
 ## Endpoints with examples
 
+### /auth/users/set_password/
+>Changes password
+
+#### method: POST
+
+response example:
+```
+{
+    "new_password": "Alpine12",
+    "current_password": "123",
+}
+```
+
 ### /api/lk
->Returns one of the three current user statuses
+>Returns lk
 
 #### method: GET
 
