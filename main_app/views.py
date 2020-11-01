@@ -23,7 +23,7 @@ class CreateTask(APIView):
                         theory=serializer.data['theory'],
                         mission=serializer.data['mission'],
                         sprint=Sprint.objects.get(id=request.data['sprint']),
-                        languages=request.data['languages'].split(','),)
+                        languages=request.data['languages'].split(','), )
             task.save()
             task.students.set(User.objects.filter(grades=request.POST.get('grade')))
 
@@ -243,8 +243,6 @@ class CodeChecker(APIView):
 
         ej_response = ej_response.json()
 
-        print(ej_response)
-
         if ej_response['body'] == '':
             data = {
                 'status': ej_response['status'],
@@ -254,19 +252,17 @@ class CodeChecker(APIView):
             return Response(json.dumps(data))
         else:
             is_done = True
-            ej_tests = list()
+            tests_count = len(ej_response['body'])
+            good_tests_count = 0
             for el in ej_response['body']:
                 if not el['status']:
                     is_done = False
-                ej_temp_dict = {
-                    'test_num': el['test_num'],
-                    'status': el['status'],
-                }
-                ej_tests.append(ej_temp_dict)
+                else:
+                    good_tests_count += 1
 
             data = {
                 'status': ej_response['status'],
-                'tests': ej_tests
+                'mark': int(good_tests_count / tests_count * 100)
             }
 
         if is_done:
