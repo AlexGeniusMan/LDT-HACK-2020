@@ -21,10 +21,11 @@ class TaskDetail(models.Model):
     last_code = models.TextField(_("Последний запущенный код"), blank=True)
 
 
-LANGUAGES = (('python', 'Python'),
+LANGUAGES = (('python3', 'Python'),
              ('cpp', 'C++'),
-             ('java', 'Java'),
-             ('c_sharp', 'C#'),
+             ('c', 'C'),
+             ('csharp', 'C#'),
+             ('perl', 'Perl'),
              ('pascal', 'Pascal'))
 
 
