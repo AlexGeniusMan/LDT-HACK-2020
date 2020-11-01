@@ -5,6 +5,26 @@ THE LEADERS OF THE DIGITAL TRANSFORMATION HACATON 2020
 
 ## Endpoints with examples
 
+### /api/lk
+>Returns one of the three current user statuses
+
+#### method: GET
+
+response example:
+```
+{
+    "data": {
+        "id": 6,
+        "first_name": "",
+        "middle_name": "",
+        "last_name": "123",
+        "email": "",
+        "school": "",
+        "date_of_birth": "2000-01-01"
+    }
+}
+```
+
 ### /api/get_status
 >Returns one of the three current user statuses
 
