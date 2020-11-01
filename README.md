@@ -14,6 +14,7 @@ response example:
 ```
 {
     "new_password": "Alpine12",
+    "re_new_password": "Alpine12"
     "current_password": "123",
 }
 ```
