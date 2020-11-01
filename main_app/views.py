@@ -25,7 +25,7 @@ class CreateTask(APIView):
                         sprint=Sprint.objects.get(id=request.data['sprint']),
                         languages=request.data['languages'].split(','), )
             task.save()
-            task.students.set(User.objects.filter(grades=request.POST.get('grade')))
+            task.students.set(User.objects.filter(grades=Grade.objects.get(sprints=task.sprint)))
 
             serializer = TestSerializer(data=request.data['tests'], many=True)
             if serializer.is_valid():
