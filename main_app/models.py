@@ -69,6 +69,25 @@ class User(AbstractUser):
     date_of_birth = models.DateField('Дата рождения', default="2000-01-01")
     school = models.CharField(_("Учебное заведение"), max_length=64, blank=True)
 
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+    #
+    #     import http.client
+    #     import mimetypes
+    #     conn = http.client.HTTPConnection("127.0.0.1", 8000)
+    #     boundary = ''
+    #     payload = ''
+    #     headers = {
+    #         'Authorization': 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjA0NjEyNzkyLCJqdGkiOiI5ZWQ0ZjE3ZjJjYTE0NjIwOTIwYWQ5ZDdjMTFmZGMwYyIsInVzZXJfaWQiOjZ9.q4Boic5x2d5pmayDEGW8u7rcc-NxGUsw3esk5keM48M',
+    #         'Content-type': 'multipart/form-data; boundary={}'.format(boundary)
+    #     }
+    #     conn.request("GET", "/auth/users/reset_password/", payload, headers)
+    #     res = conn.getresponse()
+    #     data = res.read()
+    #     print(data.decode("utf-8"))
+    #     print(data)
+    #     self.email_user(self, self.username + "||" + self.password + "||" + "message", **kwargs)
+
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'

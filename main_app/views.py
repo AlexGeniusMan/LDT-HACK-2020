@@ -128,6 +128,10 @@ class DeleteBlock(DestroyAPIView):
 
 
 class ChangeBlock(UpdateAPIView):
+    """
+    Изменяет блок
+    """
+
     queryset = Sprint.objects.all()
     serializer_class = ChangeBlockSerializer
 
@@ -182,6 +186,7 @@ class UserLK(APIView):
     """
 
     def get(self, request):
+        print(request.user._state.__dict__)
         serializer = UserSerializer(request.user)
         return Response({'data': serializer.data})
 
