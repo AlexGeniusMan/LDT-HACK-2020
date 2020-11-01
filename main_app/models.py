@@ -32,7 +32,7 @@ LANGUAGES = (('python3', 'Python'),
 class Task(models.Model):
     name = models.CharField(_("Название задания"), max_length=64, blank=True)
     theory = models.TextField(_("Теоретическое введение"), blank=True)
-    mission = models.TextField(_("Техническое задание"), max_length=64, blank=True)
+    mission = models.TextField(_("Техническое задание"), blank=True)
     sprint = models.ForeignKey('Sprint', on_delete=models.CASCADE, related_name='tasks')
     students = models.ManyToManyField(settings.AUTH_USER_MODEL, verbose_name='Учащиеся', through=TaskDetail)
     languages = MultiSelectField(choices=LANGUAGES, default='python')
