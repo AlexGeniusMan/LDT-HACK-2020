@@ -66,7 +66,7 @@ class Grade(models.Model):
 
 
 class User(AbstractUser):
-    middle_name = models.CharField(_("Отчество"), max_length=64, blank=True)
+    middle_name = models.CharField(_("middle name"), max_length=64, blank=True)
     date_of_birth = models.DateField('Дата рождения', default="2000-01-01")
     school = models.CharField(_("Учебное заведение"), max_length=64, blank=True)
 
