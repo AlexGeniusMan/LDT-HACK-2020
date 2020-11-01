@@ -243,8 +243,15 @@ class CodeChecker(APIView):
 
         ej_response = ej_response.json()
 
-        if ej_response['body'] == 'Compilation error':
-            return Response(ej_response['error'])
+        print(ej_response)
+
+        if ej_response['body'] == '':
+            data = {
+                'status': ej_response['status'],
+                'error': ej_response['error']
+            }
+
+            return Response(json.dumps(data))
         else:
             is_done = True
             ej_tests = list()
@@ -254,7 +261,6 @@ class CodeChecker(APIView):
                 ej_temp_dict = {
                     'test_num': el['test_num'],
                     'status': el['status'],
-                    'error': el['stderr']
                 }
                 ej_tests.append(ej_temp_dict)
 
@@ -262,6 +268,7 @@ class CodeChecker(APIView):
                 'status': ej_response['status'],
                 'tests': ej_tests
             }
+
         if is_done:
             task_detail = TaskDetail.objects.get(task=request.POST['task_id'], students=request.user.id)
             task_detail.is_done = True
